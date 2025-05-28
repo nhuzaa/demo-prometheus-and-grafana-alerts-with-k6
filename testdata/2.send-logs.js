@@ -13,7 +13,7 @@ let labels = loki.Labels({
 // Example query:
 // count_over_time({detected_level="error", service_name="backend"}[1m])
 
-const conf = new loki.Config("http://localhost:3100", 10000, 1.0, {}, labels);
+const conf = new loki.Config(__ENV.K6_LOKI_URL || "http://loki:3100/loki/api/v1/push", 10000, 1.0, {}, labels);
 const client = new loki.Client(conf);
 
 export default () => {

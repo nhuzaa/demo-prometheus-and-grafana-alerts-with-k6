@@ -6,7 +6,7 @@ export let options = {
 };
 
 const client = new remote.Client({
-  url: "http://localhost:9090/api/v1/write",
+  url: __ENV.K6_PROMETHEUS_RW_SERVER_URL || "http://prometheus:9090/api/v1/write",
 });
 
 // Example query:

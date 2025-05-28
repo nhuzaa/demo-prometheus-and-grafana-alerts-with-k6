@@ -103,3 +103,17 @@ You can also configure notifications to be sent via your Gmail account using an 
 - For Grafana:
 
   Copy `environments/smpt.env.example` to `environments/smpt.env` and set the appropriate environment variables values.
+
+
+### Added Rohit
+
+```
+
+docker compose run k6 run /scripts/1.cpu-usage.js
+
+docker compose run k6 run /scripts/2.send-logs.js
+docker compose run k6 run /scripts/3.add-instances.js
+
+docker compose run k6 run /scripts/3.add-instances2.js
+docker compose run k6 run /scripts/4.resolve-alerts.js
+```
