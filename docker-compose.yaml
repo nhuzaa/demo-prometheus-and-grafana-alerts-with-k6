@@ -28,6 +28,7 @@ services:
     command: ["--validation.discover-service-name=[]", "--validation.discover-log-levels=false", "-config.file=/etc/loki/loki.yaml"]
     volumes:
       - ./loki:/etc/loki/
+      - loki-data:/loki
     ports:
       - "3100:3100"
     networks:
@@ -85,8 +86,22 @@ services:
     depends_on:
       - prometheus
       - loki
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - "3001:3001"
+    networks:
+      - default
+    depends_on:
+      - prometheus
+      - loki
 volumes:
   postgres:
+    driver: local
+  loki-data:
     driver: local
 networks:
   default:

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observability Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .button-group {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        #metrics {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Observability Demo</h1>
+    <div class="button-group">
+        <button onclick="callHealth()">Call Health Check</button>
+        <button onclick="callError()">Generate Error</button>
+        <button onclick="getMetrics()">Get Metrics</button>
+    </div>
+    <div id="metrics">
+        <h2>Current Metrics</h2>
+        <p>Requests: <span id="requestCount">0</span></p>
+        <p>Errors: <span id="errorCount">0</span></p>
+    </div>
+
+    <script>
+        async function callHealth() {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                updateMetrics(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function callError() {
+            try {
+                const response = await fetch('/api/error');
+                const data = await response.json();
+                updateMetrics(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function getMetrics() {
+            try {
+                const response = await fetch('/api/metrics');
+                const data = await response.json();
+                updateMetrics(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function updateMetrics(data) {
+            document.getElementById('requestCount').textContent = data.requestCount || 0;
+            document.getElementById('errorCount').textContent = data.errorCount || 0;
+        }
+
+        // Initial metrics load
+        getMetrics();
+    </script>
+</body>
+</html> 
