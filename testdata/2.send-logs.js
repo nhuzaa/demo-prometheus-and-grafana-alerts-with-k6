@@ -3,17 +3,22 @@ import loki from "k6/x/loki";
 
 let labels = loki.Labels({
   format: ["logfmt"],
-  // detected_level: ["warn", "error"],
-  // instance: ["foo", "bar"],
-  detected_level: ["error"],
-  instance: ["foo"],
-  service_name: ["backend"],
+  detected_level: ["error", "warn", "info"], // Added multiple status types
+  instance: ["service1", "service2", "service3"],
+  service_name: ["frontend", "backend", "payment", "inventory", "shipping"],
 });
 
 // Example query:
-// count_over_time({detected_level="error", service_name="backend"}[1m])
+// count_over_time({detected_level="error", service_name=~".*"}[1m])
 
-const conf = new loki.Config(__ENV.K6_LOKI_URL || "http://loki:3100/loki/api/v1/push", 10000, 1.0, {}, labels);
+const conf = new loki.Config(
+  __ENV.K6_LOKI_URL || "http://loki:3100/loki/api/v1/push",
+  10000,
+  1.0,
+  { "X-Scope-OrgID": "single-tenant" }, // Explicitly set tenant ID
+  labels
+);
+
 const client = new loki.Client(conf);
 
 export default () => {

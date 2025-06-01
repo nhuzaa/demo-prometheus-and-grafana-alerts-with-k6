@@ -116,4 +116,5 @@ docker compose run k6 run /scripts/3.add-instances.js
 
 docker compose run k6 run /scripts/3.add-instances2.js
 docker compose run k6 run /scripts/4.resolve-alerts.js
+docker compose run k6 run /scripts/5.send-prometheus-logs.js
 ```
